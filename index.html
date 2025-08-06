@@ -1,23 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Cartas</title>
+    <title>Generador de Cartas - Presta Express</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -26,65 +25,144 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-
         .header {
             background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
-
+        .header img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 15px;
+        }
         .header h1 {
             font-size: 2.5em;
             font-weight: 700;
             margin-bottom: 10px;
         }
-
         .header p {
             font-size: 1.2em;
             opacity: 0.9;
         }
-
         .main-content {
             padding: 40px;
         }
-
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: #f8f9fa;
+            color: #666;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .step.active {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+        }
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        .step.active .step-number {
+            background: white;
+            color: #ff6b35;
+        }
         .form-section {
             background: #f8f9fa;
             border-radius: 15px;
             padding: 30px;
             margin-bottom: 30px;
             border-left: 5px solid #ff6b35;
+            display: none;
         }
-
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .form-section h2 {
             color: #ff6b35;
             margin-bottom: 20px;
             font-size: 1.8em;
         }
-
+        .carta-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .carta-option {
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .carta-option:hover {
+            border-color: #ff6b35;
+            background: #fff5f2;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.15);
+        }
+        .carta-option.selected {
+            border-color: #ff6b35;
+            background: linear-gradient(135deg, #fff5f2 0%, #ffffff 100%);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.2);
+        }
+        .carta-option .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .carta-option h3 {
+            color: #ff6b35;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        .carta-option p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-row {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
         }
-
         .form-col {
             flex: 1;
             min-width: 300px;
         }
-
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #333;
         }
-
         input, select, textarea {
             width: 100%;
             padding: 12px 15px;
@@ -93,47 +171,11 @@
             font-size: 1em;
             transition: all 0.3s ease;
         }
-
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #ff6b35;
             box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
         }
-
-        .checkbox-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .checkbox-item:hover {
-            border-color: #ff6b35;
-            background: #fff5f2;
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            width: auto;
-            margin-right: 10px;
-            transform: scale(1.2);
-        }
-
-        .checkbox-item input[type="checkbox"]:checked + label {
-            color: #ff6b35;
-            font-weight: 600;
-        }
-
         .button-group {
             display: flex;
             gap: 15px;
@@ -141,7 +183,6 @@
             justify-content: center;
             flex-wrap: wrap;
         }
-
         .btn {
             padding: 15px 30px;
             border: none;
@@ -153,28 +194,32 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
             color: white;
         }
-
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
         }
-
         .btn-secondary {
             background: white;
             color: #ff6b35;
             border: 2px solid #ff6b35;
         }
-
         .btn-secondary:hover {
             background: #ff6b35;
             color: white;
         }
-
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
         .letter-output {
             display: none;
             background: white;
@@ -184,34 +229,110 @@
             margin-top: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-
         .letter-content {
-            font-family: 'Times New Roman', serif;
-            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.4;
             color: #333;
+            font-size: 11pt;
         }
-
         .letter-header {
-            text-align: right;
+            text-align: center;
             margin-bottom: 30px;
         }
-
+        .letter-header img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
         .letter-body {
-            text-align: justify;
+            text-align: left;
             margin-bottom: 30px;
+            line-height: 1.4;
         }
-
+        .letter-body p {
+            margin-bottom: 15px;
+        }
         .letter-signature {
             margin-top: 50px;
             text-align: center;
         }
-
         .signature-line {
-            border-top: 2px solid #333;
+            border-top: 1pt solid #333;
             width: 300px;
             margin: 40px auto 10px;
         }
-
+        .copropietarios-section {
+            background: #fff5f2;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 2px solid #ff6b35;
+        }
+        .copropietario-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        .copropietario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ff6b35;
+        }
+        .copropietario-header h4 {
+            color: #ff6b35;
+            margin: 0;
+        }
+        .toggle-btn {
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+        .hidden {
+            display: none;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #17a2b8;
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+            width: 33%;
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -221,12 +342,17 @@
                 min-width: 100%;
             }
             
-            .checkbox-group {
+            .carta-selector {
                 grid-template-columns: 1fr;
             }
             
-            .button-group {
+            .button-group, .navigation-buttons {
                 flex-direction: column;
+            }
+            
+            .step-indicator {
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
@@ -234,209 +360,122 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏢 Generador de Cartas</h1>
-            
+            <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+            <h1>Generador de Cartas</h1>
+            <p>Sistema de generación automática de documentos legales</p>
         </div>
-
+        
         <div class="main-content">
-            <div class="form-section">
-                <h2>📋 Información Personal</h2>
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="nombreCompleto">Nombre Completo</label>
-                            <input type="text" id="nombreCompleto" placeholder="Ej: Juan Carlos Pérez García">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="edad">Edad</label>
-                            <input type="number" id="edad" placeholder="Ej: 35">
-                        </div>
-                    </div>
+            <!-- Indicador de Pasos -->
+            <div class="step-indicator">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <span>Tipo de Carta</span>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="estadoCivil">Estado Civil</label>
-                            <select id="estadoCivil">
-                                <option value="">Seleccionar...</option>
-                                <option value="soltero">Soltero(a)</option>
-                                <option value="casado">Casado(a)</option>
-                                <option value="divorciado">Divorciado(a)</option>
-                                <option value="viudo">Viudo(a)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="profesion">Profesión</label>
-                            <input type="text" id="profesion" placeholder="Ej: Comerciante, Ingeniero, etc.">
-                        </div>
-                    </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <span>Datos Requeridos</span>
                 </div>
-
-                <div class="form-group">
-                    <label for="dpi">DPI (Código Único de Identificación)</label>
-                    <input type="text" id="dpi" placeholder="Ej: 2641 60932 0901 o 26416093201">
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <span>Generar Documento</span>
                 </div>
             </div>
 
-            <div class="form-section">
-                <h2>🏦 Información Financiera</h2>
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="empresa">Empresa/Institución</label>
-                            <select id="empresa">
-                                <option value="">Seleccionar...</option>
-                                <option value="HOLLEM, SOCIEDAD ANÓNIMA.">HOLLEM, SOCIEDAD ANÓNIMA.</option>
-                                <option value="Presta Express">Presta Express</option>
-                                <option value="otra">Otra (escribir manualmente)</option>
-                            </select>
-                            <input type="text" id="empresaOtra" style="display: none; margin-top: 10px;" placeholder="Escribir nombre de la empresa">
-                        </div>
+            <!-- Barra de Progreso -->
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Paso 1: Selección de Carta -->
+            <div class="form-section active" id="seleccion-carta">
+                <h2>📄 Selecciona el Tipo de Carta</h2>
+                <p style="color: #666; margin-bottom: 25px;">Elige el tipo de documento que necesitas generar:</p>
+                
+                <div class="carta-selector">
+                    <div class="carta-option" data-carta="gift-card">
+                        <div class="icon">🎁</div>
+                        <h3>Carta de Regalo</h3>
+                        <p>Gift Card por tiempo de espera durante proceso de gestión</p>
                     </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="monto">Monto</label>
-                            <input type="text" id="monto" placeholder="Ej: 175000 o Q175,000.00">
-                        </div>
+                    
+                    <div class="carta-option" data-carta="constancia">
+                        <div class="icon">📋</div>
+                        <h3>Constancia de Fondos</h3>
+                        <p>Certificación del origen de fondos para transacciones</p>
+                    </div>
+                    
+                    <div class="carta-option" data-carta="cheque">
+                        <div class="icon">💳</div>
+                        <h3>Cheque Retenido</h3>
+                        <p>Solicitud de traslado de cheque retenido al saldo</p>
+                    </div>
+                    
+                    <div class="carta-option" data-carta="transferencia">
+                        <div class="icon">🏦</div>
+                        <h3>Autorización de Transferencia</h3>
+                        <p>Autorización para transferencias bancarias</p>
+                    </div>
+                    
+                    <div class="carta-option" data-carta="terceros">
+                        <div class="icon">👥</div>
+                        <h3>Cheques a Terceros</h3>
+                        <p>Autorización para cheques a nombre de terceras personas</p>
+                    </div>
+                    
+                    <div class="carta-option" data-carta="ordenes-pago">
+                        <div class="icon">💰</div>
+                        <h3>Órdenes de Pago</h3>
+                        <p>Carta de órdenes de pago y avalúo</p>
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="fecha">Fecha</label>
-                            <input type="date" id="fecha">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="numeroEscritura">Número de Escritura</label>
-                            <input type="text" id="numeroEscritura" placeholder="Ej: 437">
-                        </div>
-                    </div>
+                <div class="navigation-buttons">
+                    <div></div>
+                    <button class="btn btn-primary" onclick="siguientePaso()" id="btnSiguiente" disabled>
+                        Continuar →
+                    </button>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="numeroCheque">Número de Cheque</label>
-                            <input type="text" id="numeroCheque" placeholder="Ej: 123456">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="notario">Notario</label>
-                            <input type="text" id="notario" placeholder="Ej: María Olga Arce Godoy" value="María Olga Arce Godoy">
-                        </div>
-                    </div>
+            <!-- Paso 2: Campos Dinámicos -->
+            <div class="form-section" id="campos-datos">
+                <h2 id="titulo-carta">📋 Completa los Datos</h2>
+                <div id="campos-container"></div>
+
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="pasoAnterior()">
+                        ← Atrás
+                    </button>
+                    <button class="btn btn-primary" onclick="siguientePaso()">
+                        Continuar →
+                    </button>
                 </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="numeroCuenta">Número de Cuenta</label>
-                            <input type="text" id="numeroCuenta" placeholder="Ej: 1490192513">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="banco">Banco</label>
-                            <input type="text" id="banco" placeholder="Ej: Banco Industrial">
-                        </div>
-                    </div>
-                </div>
+            <!-- Paso 3: Generar Carta -->
+            <div class="form-section" id="generar-carta">
+                <h2>🚀 Generar Documento</h2>
+                <p style="color: #666; margin-bottom: 25px;">Revisa los datos y genera tu carta:</p>
+                
+                <div id="resumen-datos" style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e0e0e0;"></div>
 
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="tipoContrato">Tipo de Contrato</label>
-                            <select id="tipoContrato">
-                                <option value="">Seleccionar...</option>
-                                <option value="MUTUO">MUTUO</option>
-                                <option value="MUTUO, GARANTÍA HIPOTECARIA">MUTUO, GARANTÍA HIPOTECARIA</option>
-                                <option value="otro">Otro (escribir manualmente)</option>
-                            </select>
-                            <input type="text" id="tipoContratoOtro" style="display: none; margin-top: 10px;" placeholder="Escribir tipo de contrato">
-                        </div>
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" onclick="pasoAnterior()">
+                        ← Atrás
+                    </button>
+                    <div style="display: flex; gap: 15px;">
+                        <button class="btn btn-primary" onclick="generarCarta()">
+                            🚀 Generar Carta
+                        </button>
+                        <button class="btn btn-secondary" onclick="nuevaCarta()">
+                            📄 Nueva Carta
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div class="form-section">
-                <h2>👥 Información de Terceros (Opcional)</h2>
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="nombreTercero">Nombre del Tercero</label>
-                            <input type="text" id="nombreTercero" placeholder="Ej: Angelo José Javier Hidalgo Rodriguez">
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="edadTercero">Edad del Tercero</label>
-                            <input type="number" id="edadTercero" placeholder="Ej: 31">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="estadoCivilTercero">Estado Civil del Tercero</label>
-                            <select id="estadoCivilTercero">
-                                <option value="">Seleccionar...</option>
-                                <option value="soltero">Soltero(a)</option>
-                                <option value="casado">Casado(a)</option>
-                                <option value="divorciado">Divorciado(a)</option>
-                                <option value="viudo">Viudo(a)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-col">
-                        <div class="form-group">
-                            <label for="dpiTercero">DPI del Tercero</label>
-                            <input type="text" id="dpiTercero" placeholder="Ej: 2558 39901 0101">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h2>📄 Seleccionar Cartas a Generar</h2>
-                <div class="checkbox-group">
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="carta1" value="constancia">
-                        <label for="carta1">Constancia de Fondos</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="carta2" value="cheque">
-                        <label for="carta2">Cheque Retenido al Saldo</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="carta3" value="transferencia">
-                        <label for="carta3">Autorización de Transferencia</label>
-                    </div>
-                    <div class="checkbox-item">
-                        <input type="checkbox" id="carta4" value="terceros">
-                        <label for="carta4">Autorización de Cheques a Terceros</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="button-group">
-                <button class="btn btn-primary" onclick="generarCartas()">
-                    🚀 Generar Cartas
-                </button>
-                <button class="btn btn-secondary" onclick="limpiarFormulario()">
-                    🔄 Limpiar Formulario
-                </button>
-            </div>
-
+            <!-- Resultado -->
             <div id="letterOutput" class="letter-output">
                 <div class="letter-content" id="letterContent"></div>
                 <div class="button-group">
@@ -446,47 +485,1200 @@
                     <button class="btn btn-secondary" onclick="copiarCarta()">
                         📋 Copiar Texto
                     </button>
+                    <button class="btn btn-secondary" onclick="nuevaCarta()">
+                        📄 Nueva Carta
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Establecer fecha mínima al cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha').min = today;
-            document.getElementById('fecha').value = today;
-            
-            // Manejar cambio en select de empresa
-            document.getElementById('empresa').addEventListener('change', function() {
-                const empresaOtra = document.getElementById('empresaOtra');
-                if (this.value === 'otra') {
-                    empresaOtra.style.display = 'block';
-                    empresaOtra.required = true;
-                } else {
-                    empresaOtra.style.display = 'none';
-                    empresaOtra.required = false;
-                    empresaOtra.value = '';
-                }
-            });
+        // Variables globales
+        let currentStep = 1;
+        let selectedCarta = '';
+        let copropietarios = [];
+        let contadorCopropietarios = 0;
+        let retenciones = [];
+        let contadorRetenciones = 0;
+        let datosGuardados = {}; // Para mantener datos entre cartas
 
-            // Manejar cambio en select de tipo de contrato
-            document.getElementById('tipoContrato').addEventListener('change', function() {
-                const tipoContratoOtro = document.getElementById('tipoContratoOtro');
-                if (this.value === 'otro') {
-                    tipoContratoOtro.style.display = 'block';
-                    tipoContratoOtro.required = true;
-                } else {
-                    tipoContratoOtro.style.display = 'none';
-                    tipoContratoOtro.required = false;
-                    tipoContratoOtro.value = '';
-                }
+        // FUNCIONES GLOBALES DEFINIDAS AL INICIO
+        window.toggleRetenciones = function() {
+            console.log('toggleRetenciones llamada');
+            const section = document.getElementById('retencionesSection');
+            console.log('Sección encontrada:', section);
+            if (section) {
+                section.classList.toggle('hidden');
+                console.log('Clases después del toggle:', section.classList);
+            } else {
+                console.error('No se encontró retencionesSection');
+            }
+        };
+
+        window.agregarRetencion = function() {
+            console.log('agregarRetencion llamada');
+            contadorRetenciones++;
+            const retencion = {
+                id: contadorRetenciones,
+                nombre: '',
+                monto: ''
+            };
+            
+            retenciones.push(retencion);
+            console.log('Retenciones actuales:', retenciones);
+            window.renderizarRetenciones();
+        };
+
+        window.eliminarRetencion = function(id) {
+            console.log('Eliminando retención:', id);
+            retenciones = retenciones.filter(r => r.id !== id);
+            window.renderizarRetenciones();
+        };
+
+        window.actualizarRetencion = function(id, campo, valor) {
+            console.log('Actualizando retención:', id, campo, valor);
+            const retencion = retenciones.find(r => r.id === id);
+            if (retencion) {
+                retencion[campo] = valor;
+                console.log('Retención actualizada:', retencion);
+            }
+        };
+
+        window.renderizarRetenciones = function() {
+            console.log('renderizarRetenciones llamada');
+            const container = document.getElementById('retencionesList');
+            console.log('Container encontrado:', container);
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            retenciones.forEach((retencion, index) => {
+                console.log('Renderizando retención:', retencion);
+                container.innerHTML += `
+                    <div class="copropietario-item">
+                        <div class="copropietario-header">
+                            <h4>Retención ${index + 3}</h4>
+                            <button type="button" class="btn btn-danger" onclick="eliminarRetencion(${retencion.id})">
+                                Eliminar
+                            </button>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>Nombre de la Retención:</label>
+                                    <input type="text" onchange="actualizarRetencion(${retencion.id}, 'nombre', this.value)" 
+                                           value="${retencion.nombre}" placeholder="Ej: RETENER HASTA TENER CERTIFICACIÓN DE...">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>Monto (Q):</label>
+                                    <input type="number" step="0.01" onchange="actualizarRetencion(${retencion.id}, 'monto', this.value)" 
+                                           value="${retencion.monto}" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
+            console.log('Retenciones renderizadas');
+        };
+
+        window.toggleCopropietarios = function() {
+            const section = document.getElementById('copropietariosSection');
+            if (section) {
+                section.classList.toggle('hidden');
+            }
+        };
+
+        window.agregarCopropietario = function() {
+            contadorCopropietarios++;
+            const copropietario = {
+                id: contadorCopropietarios,
+                nombre: '',
+                edad: '',
+                estadoCivil: 'casado',
+                nacionalidad: 'guatemalteco/a',
+                profesion: 'comerciante',
+                dpi: ''
+            };
+            
+            copropietarios.push(copropietario);
+            window.renderizarCopropietarios();
+        };
+
+        window.eliminarCopropietario = function(id) {
+            copropietarios = copropietarios.filter(c => c.id !== id);
+            window.renderizarCopropietarios();
+        };
+
+        window.actualizarCopropietario = function(id, campo, valor) {
+            const copropietario = copropietarios.find(c => c.id === id);
+            if (copropietario) {
+                copropietario[campo] = valor;
+            }
+        };
+
+        window.renderizarCopropietarios = function() {
+            const container = document.getElementById('copropietariosList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            copropietarios.forEach((coprop, index) => {
+                container.innerHTML += `
+                    <div class="copropietario-item">
+                        <div class="copropietario-header">
+                            <h4>Copropietario ${index + 1}</h4>
+                            <button type="button" class="btn btn-danger" onclick="eliminarCopropietario(${coprop.id})">
+                                Eliminar
+                            </button>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>Nombre Completo:</label>
+                                    <input type="text" onchange="actualizarCopropietario(${coprop.id}, 'nombre', this.value)" value="${coprop.nombre}">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>Edad:</label>
+                                    <input type="number" onchange="actualizarCopropietario(${coprop.id}, 'edad', this.value)" value="${coprop.edad}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>Estado Civil:</label>
+                                    <select onchange="actualizarCopropietario(${coprop.id}, 'estadoCivil', this.value)">
+                                        <option value="soltero" ${coprop.estadoCivil === 'soltero' ? 'selected' : ''}>Soltero</option>
+                                        <option value="soltera" ${coprop.estadoCivil === 'soltera' ? 'selected' : ''}>Soltera</option>
+                                        <option value="casado" ${coprop.estadoCivil === 'casado' ? 'selected' : ''}>Casado</option>
+                                        <option value="casada" ${coprop.estadoCivil === 'casada' ? 'selected' : ''}>Casada</option>
+                                        <option value="divorciado" ${coprop.estadoCivil === 'divorciado' ? 'selected' : ''}>Divorciado</option>
+                                        <option value="divorciada" ${coprop.estadoCivil === 'divorciada' ? 'selected' : ''}>Divorciada</option>
+                                        <option value="viudo" ${coprop.estadoCivil === 'viudo' ? 'selected' : ''}>Viudo</option>
+                                        <option value="viuda" ${coprop.estadoCivil === 'viuda' ? 'selected' : ''}>Viuda</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label>DPI:</label>
+                                    <input type="text" maxlength="15" oninput="formatearDPI(this)" onchange="actualizarCopropietario(${coprop.id}, 'dpi', this.value)" value="${coprop.dpi}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+
+        window.toggleNombreCuenta = function() {
+    const tipoSelect = document.getElementById('tipoNombreCuenta');
+    const nombreInput = document.getElementById('nombreCuenta');
+    
+    if (tipoSelect && nombreInput) {
+        if (tipoSelect.value === 'otro') {
+            nombreInput.style.display = 'block';
+            nombreInput.required = true;
+        } else {
+            nombreInput.style.display = 'none';
+            nombreInput.required = false;
+            nombreInput.value = '';
+        }
+    }
+};
+
+        // Configuración de campos por tipo de carta
+        const camposPorCarta = {
+            'gift-card': {
+                titulo: '🎁 Carta de Regalo (Gift Card)',
+                campos: ['basicos', 'giftcard']
+            },
+            'constancia': {
+                titulo: '📋 Constancia de Fondos',
+                campos: ['basicos', 'financieros', 'empresa']
+            },
+            'cheque': {
+                titulo: '💳 Cheque Retenido al Saldo',
+                campos: ['basicos', 'empresa', 'cheque']
+            },
+            'transferencia': {
+                titulo: '🏦 Autorización de Transferencia',
+                campos: ['basicos', 'empresa', 'transferencia']
+            },
+            'terceros': {
+                titulo: '👥 Autorización de Cheques a Terceros',
+                campos: ['basicos', 'empresa', 'terceros']
+            },
+            'ordenes-pago': {
+                titulo: '💰 Carta de Órdenes de Pago y Avalúo',
+                campos: ['basicos', 'empresa', 'ordenes']
+            }
+        };
+
+        // Números a letras en español
+        const numerosLetras = {
+            0: 'cero', 1: 'uno', 2: 'dos', 3: 'tres', 4: 'cuatro', 5: 'cinco',
+            6: 'seis', 7: 'siete', 8: 'ocho', 9: 'nueve', 10: 'diez',
+            11: 'once', 12: 'doce', 13: 'trece', 14: 'catorce', 15: 'quince',
+            16: 'dieciséis', 17: 'diecisiete', 18: 'dieciocho', 19: 'diecinueve',
+            20: 'veinte', 21: 'veintiuno', 22: 'veintidós', 23: 'veintitrés',
+            24: 'veinticuatro', 25: 'veinticinco', 26: 'veintiséis', 27: 'veintisiete',
+            28: 'veintiocho', 29: 'veintinueve', 30: 'treinta', 40: 'cuarenta',
+            50: 'cincuenta', 60: 'sesenta', 70: 'setenta', 80: 'ochenta', 90: 'noventa'
+        };
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado - iniciando aplicación');
+            
+            // Establecer fecha actual
+            const today = new Date().toISOString().split('T')[0];
+            datosGuardados.fecha = today;
+            console.log('Fecha establecida:', today);
+
+            // Event listeners para selección de carta
+            document.querySelectorAll('.carta-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    console.log('Carta seleccionada:', this.dataset.carta);
+                    
+                    // Remover selección anterior
+                    document.querySelectorAll('.carta-option').forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Seleccionar nueva carta
+                    this.classList.add('selected');
+                    selectedCarta = this.dataset.carta;
+                    
+                    console.log('Variable selectedCarta actualizada:', selectedCarta);
+                    
+                    // Habilitar botón siguiente
+                    const btnSiguiente = document.getElementById('btnSiguiente');
+                    btnSiguiente.disabled = false;
+                    console.log('Botón siguiente habilitado');
+                });
+            });
+            
+            console.log('Event listeners configurados');
         });
 
-        // Función para convertir números a letras
+        // Navegación entre pasos
+        function siguientePaso() {
+            console.log('Paso actual:', currentStep, 'Carta seleccionada:', selectedCarta);
+            
+            if (currentStep === 1 && selectedCarta) {
+                console.log('Avanzando al paso 2 - generando campos');
+                generarCamposDinamicos();
+                cambiarPaso(2);
+            } else if (currentStep === 2) {
+                console.log('Validando campos del paso 2');
+                if (validarCampos()) {
+                    console.log('Campos válidos, guardando datos');
+                    guardarDatos();
+                    mostrarResumen();
+                    cambiarPaso(3);
+                } else {
+                    console.log('Campos inválidos');
+                    alert('Por favor completa todos los campos requeridos.');
+                }
+            } else {
+                console.log('Condición no cumplida - currentStep:', currentStep, 'selectedCarta:', selectedCarta);
+            }
+        }
+
+        function pasoAnterior() {
+            if (currentStep === 2) {
+                cambiarPaso(1);
+            } else if (currentStep === 3) {
+                cambiarPaso(2);
+            }
+        }
+
+        function cambiarPaso(paso) {
+            // Ocultar todos los pasos
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Actualizar indicadores
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Mostrar paso actual
+            currentStep = paso;
+            document.getElementById(`step${paso}`).classList.add('active');
+            
+            // Actualizar barra de progreso
+            const progress = (paso - 1) * 50;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // Mostrar sección correspondiente
+            if (paso === 1) {
+                document.getElementById('seleccion-carta').classList.add('active');
+            } else if (paso === 2) {
+                document.getElementById('campos-datos').classList.add('active');
+            } else if (paso === 3) {
+                document.getElementById('generar-carta').classList.add('active');
+            }
+        }
+
+        // Generar campos dinámicos según tipo de carta
+        function generarCamposDinamicos() {
+            console.log('Generando campos para:', selectedCarta);
+            
+            if (!selectedCarta) {
+                console.error('No hay carta seleccionada');
+                return;
+            }
+            
+            const config = camposPorCarta[selectedCarta];
+            if (!config) {
+                console.error('Configuración no encontrada para:', selectedCarta);
+                return;
+            }
+            
+            console.log('Configuración encontrada:', config);
+            
+            document.getElementById('titulo-carta').textContent = config.titulo;
+            
+            const container = document.getElementById('campos-container');
+            container.innerHTML = '';
+            
+            config.campos.forEach(grupoCampos => {
+                console.log('Generando grupo:', grupoCampos);
+                const grupoElement = generarGrupoCampos(grupoCampos);
+                container.appendChild(grupoElement);
+            });
+            
+            // Llenar campos con datos guardados después de crear el DOM
+            setTimeout(() => {
+                llenarCamposGuardados();
+            }, 100);
+            
+            console.log('Campos generados correctamente');
+        }
+
+        function generarGrupoCampos(tipo) {
+            const div = document.createElement('div');
+            div.className = 'form-section active';
+            div.style.display = 'block';
+            
+            switch (tipo) {
+                case 'basicos':
+                    div.innerHTML = `
+                        <h2>👤 Información Personal</h2>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="nombreCompleto">Nombre Completo *</label>
+                                    <input type="text" id="nombreCompleto" placeholder="Ej: Juan Carlos Pérez García" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="edad">Edad (números) *</label>
+                                    <input type="number" id="edad" placeholder="Ej: 35" required oninput="convertirEdadLetras()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="edadLetras">Edad (letras)</label>
+                                    <input type="text" id="edadLetras" placeholder="Se genera automáticamente" readonly>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="estadoCivil">Estado Civil *</label>
+                                    <select id="estadoCivil" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="soltero">Soltero</option>
+                                        <option value="soltera">Soltera</option>
+                                        <option value="casado">Casado</option>
+                                        <option value="casada">Casada</option>
+                                        <option value="divorciado">Divorciado</option>
+                                        <option value="divorciada">Divorciada</option>
+                                        <option value="viudo">Viudo</option>
+                                        <option value="viuda">Viuda</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="nacionalidad">Nacionalidad</label>
+                                    <input type="text" id="nacionalidad" value="guatemalteco/a">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="profesion">Profesión</label>
+                                    <input type="text" id="profesion" value="comerciante">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="dpi">DPI (números) *</label>
+                                    <input type="text" id="dpi" placeholder="Ej: 2641 60932 0901" maxlength="15" required oninput="formatearDPI(this)">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="dpiLetras">DPI (letras)</label>
+                                    <textarea id="dpiLetras" rows="2" placeholder="Se genera automáticamente" readonly></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="fecha">Fecha del Documento</label>
+                            <input type="date" id="fecha">
+                        </div>
+
+                        ${(selectedCarta !== 'gift-card') ? `
+                        <button type="button" class="toggle-btn" onclick="toggleCopropietarios()">
+                            👥 Agregar Copropietarios
+                        </button>
+                        
+                        <div id="copropietariosSection" class="copropietarios-section hidden">
+                            <div class="alert">
+                                <strong>Información:</strong> Los copropietarios aparecerán en las cartas que lo requieran automáticamente.
+                            </div>
+                            <div id="copropietariosList"></div>
+                            <button type="button" class="btn btn-secondary" onclick="agregarCopropietario()">
+                                + Agregar Copropietario
+                            </button>
+                        </div>
+                        ` : ''}
+                    `;
+                    break;
+
+                case 'empresa':
+                    div.innerHTML = `
+                        <h2>🏢 Empresa Destinataria</h2>
+                        <div class="form-group">
+                            <label for="empresa">Empresa Destinataria *</label>
+                            <select id="empresa" required>
+                                <option value="HOLLEM, SOCIEDAD ANÓNIMA.">HOLLEM, SOCIEDAD ANÓNIMA.</option>
+                                <option value="PRESTA EXPRESS, SOCIEDAD ANÓNIMA.">PRESTA EXPRESS, SOCIEDAD ANÓNIMA.</option>
+                                <option value="otra">Otra (escribir manualmente)</option>
+                            </select>
+                            <input type="text" id="empresaOtra" style="display: none; margin-top: 10px;" placeholder="Escribir nombre de la empresa">
+                        </div>
+                    `;
+                    break;
+
+                case 'financieros':
+                    div.innerHTML = `
+                        <h2>💰 Información Financiera</h2>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="monto">Monto *</label>
+                                    <input type="text" id="monto" placeholder="Ej: 175000 o Q175,000.00" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="numeroEscritura">Número de Escritura *</label>
+                                    <input type="text" id="numeroEscritura" placeholder="Ej: 437" required>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'giftcard':
+                    div.innerHTML = `
+                        <h2>🎁 Datos de Gift Card</h2>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="valorGiftCard">Valor Gift Card (Q) *</label>
+                                    <input type="number" id="valorGiftCard" placeholder="100.00" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="nombreAsesor">Nombre del Asesor *</label>
+                                    <input type="text" id="nombreAsesor" placeholder="Nombre del asesor" required>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'cheque':
+                    div.innerHTML = `
+                        <h2>💳 Datos del Cheque</h2>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="numeroCheque">Número de Cheque *</label>
+                                    <input type="text" id="numeroCheque" placeholder="Ej: 123456" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="monto">Monto del Cheque *</label>
+                                    <input type="text" id="monto" placeholder="Ej: 5000.00" required>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'transferencia':
+                    div.innerHTML = `
+                        <h2>🏦 Datos de Transferencia</h2>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="numeroCuenta">Número de Cuenta *</label>
+                                    <input type="text" id="numeroCuenta" placeholder="Ej: 1490192513" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+    <div class="form-col">
+        <div class="form-group">
+            <label for="banco">Banco *</label>
+            <input type="text" id="banco" placeholder="Ej: Banco Industrial" required>
+        </div>
+    </div>
+    <div class="form-col">
+        <div class="form-group">
+            <label for="nombreCuenta">Nombre de la Cuenta *</label>
+            <select id="tipoNombreCuenta" onchange="toggleNombreCuenta()" required>
+                <option value="">Seleccionar...</option>
+                <option value="mismo">Mismo nombre del cliente</option>
+                <option value="otro">Otro nombre</option>
+            </select>
+            <input type="text" id="nombreCuenta" style="display: none; margin-top: 10px;" placeholder="Escribir nombre de la cuenta">
+        </div>
+    </div>
+</div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="numeroEscritura">Número de Escritura *</label>
+                                    <input type="text" id="numeroEscritura" placeholder="Ej: 422" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="notario">Notario</label>
+                                    <input type="text" id="notario" value="María Olga Arce Godoy">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoContrato">Tipo de Contrato</label>
+                            <select id="tipoContrato">
+                                <option value="MUTUO, GARANTÍA HIPOTECARIA">MUTUO, GARANTÍA HIPOTECARIA</option>
+                                <option value="MUTUO">MUTUO</option>
+                                <option value="MUTUO CON GARANTÍA HIPOTECARIA">MUTUO CON GARANTÍA HIPOTECARIA</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
+
+                case 'terceros':
+                    div.innerHTML = `
+                        <h2>👥 Datos del Tercero</h2>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="nombreTercero">Nombre del Tercero *</label>
+                                    <input type="text" id="nombreTercero" placeholder="Ej: Angelo José Javier Hidalgo Rodriguez" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="edadTercero">Edad del Tercero *</label>
+                                    <input type="number" id="edadTercero" placeholder="Ej: 31" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="estadoCivilTercero">Estado Civil del Tercero *</label>
+                                    <select id="estadoCivilTercero" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="soltero">Soltero</option>
+                                        <option value="soltera">Soltera</option>
+                                        <option value="casado">Casado</option>
+                                        <option value="casada">Casada</option>
+                                        <option value="divorciado">Divorciado</option>
+                                        <option value="divorciada">Divorciada</option>
+                                        <option value="viudo">Viudo</option>
+                                        <option value="viuda">Viuda</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="dpiTercero">DPI del Tercero *</label>
+                                    <input type="text" id="dpiTercero" placeholder="Ej: 2558 39901 0101" maxlength="15" required oninput="formatearDPI(this)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+    <label for="tipoContrato">Tipo de Contrato *</label>
+    <select id="tipoContrato" required>
+        <option value="">Seleccionar...</option>
+        <option value="MUTUO" selected>MUTUO</option>
+        <option value="MUTUO, GARANTÍA HIPOTECARIA">MUTUO, GARANTÍA HIPOTECARIA</option>
+    </select>
+</div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="numeroEscritura">Número de Escritura *</label>
+                                    <input type="text" id="numeroEscritura" placeholder="Ej: 359" required>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="notario">Notario</label>
+                                    <input type="text" id="notario" value="María Olga Arce Godoy">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'ordenes':
+                    div.innerHTML = `
+                        <h2>💰 Datos de Órdenes de Pago</h2>
+                        <div class="form-group">
+                            <label for="tipoContrato">Tipo de Contrato *</label>
+                            <select id="tipoContrato" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="MUTUO">MUTUO</option>
+                                <option value="MUTUO CON GARANTÍA HIPOTECARIA" selected>MUTUO CON GARANTÍA HIPOTECARIA</option>
+                                <option value="MUTUO CON GARANTÍA HIPOTECARIA GARANTIA">MUTUO CON GARANTÍA HIPOTECARIA GARANTIA</option>
+                                <option value="MUTUO, GARANTÍA HIPOTECARIA">MUTUO, GARANTÍA HIPOTECARIA</option>
+                            </select>
+                        </div>
+                        
+                        <h3 style="color: #ff6b35; margin: 25px 0 15px;">Retenciones</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="montoRetencion1">Monto Retención 1 - Registro y Avalúo (Q)</label>
+                                    <input type="number" id="montoRetencion1" value="30000" step="0.01">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label for="montoRetencion2">Monto Retención 2 - Nomenclatura (Q)</label>
+                                    <input type="number" id="montoRetencion2" value="2000" step="0.01">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" class="toggle-btn" onclick="toggleRetenciones()">
+                            💰 Agregar Más Retenciones
+                        </button>
+                        
+                        <div id="retencionesSection" class="copropietarios-section hidden">
+                            <div class="alert">
+                                <strong>Información:</strong> Puedes agregar retenciones adicionales con nombre y monto personalizados.
+                            </div>
+                            <div id="retencionesList"></div>
+                            <button type="button" class="btn btn-secondary" onclick="agregarRetencion()">
+                                + Agregar Retención
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notario">Notario</label>
+                            <input type="text" id="notario" value="María Olga Arce Godoy">
+                        </div>
+                    `;
+                    break;
+            }
+            
+            return div;
+        }
+
+        // Funciones auxiliares (mantener todas las funciones de conversión, formateo, etc.)
         function numeroALetras(numero) {
+            if (numero === 0) return 'cero';
+            if (numero <= 30) return numerosLetras[numero];
+            if (numero < 100) {
+                const decenas = Math.floor(numero / 10) * 10;
+                const unidades = numero % 10;
+                if (unidades === 0) {
+                    return numerosLetras[decenas];
+                } else if (unidades === 1) {
+                    return numerosLetras[decenas] + ' y un';
+                } else {
+                    return numerosLetras[decenas] + ' y ' + numerosLetras[unidades];
+                }
+            }
+            return numero.toString();
+        }
+
+        function convertirEdadLetras() {
+            const edad = parseInt(document.getElementById('edad').value);
+            if (edad) {
+                document.getElementById('edadLetras').value = numeroALetras(edad);
+            }
+        }
+
+        function formatearDPI(input) {
+            let valor = input.value.replace(/\s/g, '');
+            valor = valor.replace(/[^\d]/g, '');
+            
+            let formateado = '';
+            if (valor.length <= 4) {
+                formateado = valor;
+            } else if (valor.length <= 9) {
+                formateado = valor.substring(0, 4) + ' ' + valor.substring(4);
+            } else if (valor.length <= 13) {
+                formateado = valor.substring(0, 4) + ' ' + valor.substring(4, 9) + ' ' + valor.substring(9);
+            }
+            
+            input.value = formateado;
+            
+            if (valor.length === 13) {
+                convertirDPILetras(input);
+            }
+        }
+
+       function numeroALetrasDPI(num) {
+    if (num === 0) return 'cero';
+    
+    const unidades = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
+    const decenas = ['', '', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+    const especiales = ['diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve'];
+    const veintes = ['veinte', 'veintiuno', 'ventidos', 'veintitrés', 'veinticuatro', 'veinticinco', 'veintiséis', 'veintisiete', 'veintiocho', 'veintinueve'];
+    const centenas = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+
+    if (num === 100) return 'cien';
+
+    let resultado = '';
+
+    if (num >= 1000) {
+        const miles = Math.floor(num / 1000);
+        if (miles === 1) {
+            resultado += 'mil ';
+        } else {
+            resultado += numeroALetrasDPI(miles) + ' mil ';
+        }
+        num = num % 1000;
+    }
+
+    if (num >= 100) {
+        resultado += centenas[Math.floor(num / 100)] + ' ';
+        num = num % 100;
+    }
+
+    if (num >= 20 && num <= 29) {
+        resultado += veintes[num - 20]; // Para 20-29 usar la forma junta
+    } else if (num >= 30) {
+        resultado += decenas[Math.floor(num / 10)];
+        if (num % 10 > 0) {
+            resultado += ' y ' + unidades[num % 10];
+        }
+    } else if (num >= 10) {
+        resultado += especiales[num - 10];
+    } else if (num > 0) {
+        resultado += unidades[num];
+    }
+
+    return resultado.trim();
+}
+        function convertirDPILetras(input) {
+            let dpi = input.value.replace(/\s/g, '');
+            if (dpi.length === 13) {
+                const grupo1 = dpi.substring(0, 4);
+                const grupo2 = dpi.substring(4, 9);
+                const grupo3 = dpi.substring(9, 13);
+                
+               // Para el grupo 3, verificar si empieza con cero
+let letras3;
+if (grupo3.startsWith('0')) {
+    const resto = parseInt(grupo3.substring(1)); // Quitar el primer cero
+    if (resto === 0) {
+        letras3 = 'cero cero cero cero';
+    } else {
+        letras3 = 'cero ' + numeroALetrasDPI(resto);
+    }
+} else {
+    letras3 = numeroALetrasDPI(parseInt(grupo3));
+}
+
+const letras1 = numeroALetrasDPI(parseInt(grupo1));
+const letras2 = numeroALetrasDPI(parseInt(grupo2));
+                
+                if (input.id === 'dpi') {
+                    document.getElementById('dpiLetras').value = 
+                        `número ${letras1} espacio ${letras2} espacio ${letras3}`;
+                }
+            }
+        }
+
+        function convertirNumeroCompleto(num) {
+            if (num === 0) return 'cero';
+            
+            let resultado = '';
+            
+            if (num >= 1000) {
+                const miles = Math.floor(num / 1000);
+                const resto = num % 1000;
+                
+                if (miles === 1) {
+                    resultado = 'mil';
+                } else {
+                    resultado = convertirCentenas(miles) + ' mil';
+                }
+                
+                if (resto > 0) {
+                    resultado += ' ' + convertirCentenas(resto);
+                }
+            } else {
+                resultado = convertirCentenas(num);
+            }
+            
+            return resultado;
+        }
+
+        function convertirCentenas(num) {
+            if (num === 0) return '';
+            if (num < 100) return convertirDecenas(num);
+            
+            const centenas = Math.floor(num / 100);
+            const resto = num % 100;
+            
+            const nombresCentenas = {
+                1: resto === 0 ? 'cien' : 'ciento',
+                2: 'doscientos', 3: 'trescientos', 4: 'cuatrocientos', 5: 'quinientos',
+                6: 'seiscientos', 7: 'setecientos', 8: 'ochocientos', 9: 'novecientos'
+            };
+            
+            let resultado = nombresCentenas[centenas];
+            if (resto > 0) {
+                resultado += ' ' + convertirDecenas(resto);
+            }
+            
+            return resultado;
+        }
+
+        function convertirDecenas(num) {
+            if (num < 30) return numerosLetras[num] || '';
+            
+            const decenas = Math.floor(num / 10) * 10;
+            const unidades = num % 10;
+            
+            if (unidades === 0) {
+                return numerosLetras[decenas];
+            } else if (unidades === 1) {
+                return numerosLetras[decenas] + ' y un';
+            } else {
+                return numerosLetras[decenas] + ' y ' + numerosLetras[unidades];
+            }
+        }
+
+        // Llenar campos con datos guardados
+        function llenarCamposGuardados() {
+            // Llenar campos básicos
+            Object.keys(datosGuardados).forEach(campo => {
+                const element = document.getElementById(campo);
+                if (element && datosGuardados[campo]) {
+                    element.value = datosGuardados[campo];
+                    
+                    // Actualizar campos dependientes
+                    if (campo === 'edad' && datosGuardados[campo]) {
+                        setTimeout(() => convertirEdadLetras(), 100);
+                    }
+                    if (campo === 'dpi' && datosGuardados[campo]) {
+                        setTimeout(() => formatearDPI(element), 100);
+                    }
+                }
+            });
+
+            // Configurar fecha por defecto si no hay una guardada
+            const fechaElement = document.getElementById('fecha');
+            if (fechaElement && !datosGuardados.fecha) {
+                const today = new Date().toISOString().split('T')[0];
+                fechaElement.value = today;
+                datosGuardados.fecha = today;
+            }
+
+            // Configurar eventos específicos después de generar el DOM
+            setTimeout(() => {
+                const empresaSelect = document.getElementById('empresa');
+                if (empresaSelect) {
+                    empresaSelect.addEventListener('change', function() {
+                        const empresaOtra = document.getElementById('empresaOtra');
+                        if (empresaOtra) {
+                            if (this.value === 'otra') {
+                                empresaOtra.style.display = 'block';
+                                empresaOtra.required = true;
+                            } else {
+                                empresaOtra.style.display = 'none';
+                                empresaOtra.required = false;
+                                empresaOtra.value = '';
+                            }
+                        }
+                    });
+                }
+                
+                // Si ya hay una empresa guardada y es "otra", mostrar el campo
+                if (datosGuardados.empresa === 'otra' && datosGuardados.empresaOtra) {
+                    const empresaOtra = document.getElementById('empresaOtra');
+                    if (empresaOtra) {
+                        empresaOtra.style.display = 'block';
+                        empresaOtra.value = datosGuardados.empresaOtra;
+                    }
+                }
+            }, 200);
+        }
+
+        // Validar campos requeridos
+        function validarCampos() {
+            const requiredFields = document.querySelectorAll('#campos-container input[required], #campos-container select[required]');
+            
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    field.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Guardar datos del formulario
+        function guardarDatos() {
+            const inputs = document.querySelectorAll('#campos-container input, #campos-container select, #campos-container textarea');
+            inputs.forEach(input => {
+                if (input.value) {
+                    datosGuardados[input.id] = input.value;
+                }
+            });
+            
+            // Guardar retenciones adicionales en los datos
+            datosGuardados.retencionesAdicionales = retenciones;
+        }
+
+        // Mostrar resumen de datos
+        function mostrarResumen() {
+            const resumen = document.getElementById('resumen-datos');
+            const config = camposPorCarta[selectedCarta];
+            
+            let html = `<h3>${config.titulo}</h3><hr style="margin: 15px 0;"><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">`;
+            
+            // Mostrar datos principales
+            if (datosGuardados.nombreCompleto) {
+                html += `<p><strong>Nombre:</strong> ${datosGuardados.nombreCompleto}</p>`;
+            }
+            if (datosGuardados.edadLetras) {
+                html += `<p><strong>Edad:</strong> ${datosGuardados.edadLetras} años</p>`;
+            }
+            if (datosGuardados.estadoCivil) {
+                html += `<p><strong>Estado Civil:</strong> ${datosGuardados.estadoCivil}</p>`;
+            }
+            if (datosGuardados.dpi) {
+                html += `<p><strong>DPI:</strong> ${datosGuardados.dpi}</p>`;
+            }
+            
+            // Datos específicos por tipo de carta
+            if (selectedCarta === 'gift-card' && datosGuardados.valorGiftCard) {
+                html += `<p><strong>Valor Gift Card:</strong> Q${datosGuardados.valorGiftCard}</p>`;
+            }
+            if (datosGuardados.monto) {
+                html += `<p><strong>Monto:</strong> ${datosGuardados.monto}</p>`;
+            }
+            if (datosGuardados.empresa) {
+                html += `<p><strong>Empresa:</strong> ${datosGuardados.empresa}</p>`;
+            }
+            
+            html += '</div>';
+            resumen.innerHTML = html;
+        }
+
+        // Generar la carta
+        function generarCarta() {
+            let fechaFormateada;
+            if (datosGuardados.fecha) {
+                const fecha = new Date(datosGuardados.fecha + 'T00:00:00');
+                fechaFormateada = 'Guatemala, ' + fecha.toLocaleDateString('es-GT', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                }) + '.';
+            } else {
+                fechaFormateada = 'Guatemala, ' + new Date().toLocaleDateString('es-GT', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                }) + '.';
+            }
+
+            let contenido = '';
+            
+            switch (selectedCarta) {
+                case 'gift-card':
+                    contenido = generarGiftCard(datosGuardados, fechaFormateada);
+                    break;
+                case 'constancia':
+                    contenido = generarConstanciaFondos(datosGuardados, fechaFormateada);
+                    break;
+                case 'cheque':
+                    contenido = generarChequeRetenido(datosGuardados, fechaFormateada);
+                    break;
+                case 'transferencia':
+                    contenido = generarAutorizacionTransferencia(datosGuardados, fechaFormateada);
+                    break;
+                case 'terceros':
+                    contenido = generarAutorizacionTerceros(datosGuardados, fechaFormateada);
+                    break;
+                case 'ordenes-pago':
+                    contenido = generarOrdenesPago(datosGuardados, fechaFormateada);
+                    break;
+            }
+
+            document.getElementById('letterContent').innerHTML = contenido;
+            document.getElementById('letterOutput').style.display = 'block';
+            document.getElementById('letterOutput').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Funciones de generación de cartas (mantener las mismas del código anterior)
+        function generarGiftCard(datos, fecha) {
+            return `
+                <div class="letter-header">
+                    <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+                </div>
+                
+                <div style="margin-bottom: 40px;">
+<p><strong>Fecha: ${fecha.replace('Guatemala, ', '').replace('.', '')}</strong></p>                    <p></p>
+<p><strong>Nombre de Beneficiario: ${(datos.nombreCompleto || '').toUpperCase()}</strong></p>
+
+                    <p></p>
+<p><strong>DPI: ${formatearDPIDisplay(datos.dpi || '')}</strong></p>
+
+                </div>
+                
+                <div class="letter-body">
+                    <p></p>
+<p>Por medio de la presente, hago constar que he recibido una tarjeta de regalo (Gift Card) con un valor de Q${datos.valorGiftCard || ''},
+
+                    <p></p>
+                    <p>Reconozco que esta Gift Card no forma parte del monto desembolsado ni del contrato de préstamo hipotecario otorgado, y que he recibido dicha tarjeta a satisfacción.</p>
+                </div>
+                
+                <div style="margin-top: 80px;">
+                    <p>Firma: ________________________________</p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p style="text-align: center;">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        ________________________________<br>
+<strong>${(datos.nombreAsesor || 'Nombre de Asesor').toUpperCase()}</strong>
+                    </p>
+                </div>
+            `;
+        }
+
+        function generarConstanciaFondos(datos, fecha) {
+            const numeroEscrituraEnLetras = numeroALetrasCompleto(parseInt(datos.numeroEscritura || 0));
+            const montoFormateado = formatearMonto(datos.monto || '0');
+            const genero = detectarGenero(datos.nombreCompleto || '');
+            const tratamiento = genero === 'femenino' ? 'Sra' : 'Sr';
+            
+            return `
+                <div class="letter-header">
+                    <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 30px;">
+                    <strong>${fecha}</strong>
+                </div>
+                
+                <div class="letter-body">
+                    <p><strong>Señores:</strong></p>
+                    <p><strong>Presentes</strong></p>
+                    <p></p>
+                    <p><strong>Estimado jefe de Agencia,</strong></p>
+                    <p></p>
+                    <p>Espero que esta carta le encuentre bien. Me dirijo a usted para proporcionar información sobre la procedencia de los fondos del <strong>${tratamiento}. ${datos.nombreCompleto || ''}</strong>, de ${datos.edadLetras || ''} años, ${datos.estadoCivil || ''}, ${datos.nacionalidad || ''}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) ${datos.dpiLetras || ''}.</p>
+                    <p></p>
+                    <p>El origen de los fondos proviene de la autorización de crédito con garantía hipotecaria / <strong>Presta Express</strong>.</p>
+                    <p></p>
+                    <p>De escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura || ''}) por un monto de ${montoFormateado} los cuales se componen de gastos administrativos, legales y líquido del cliente.</p>
+                    <p></p>
+                    <p>Quedo a su disposición para cualquier consulta adicional y agradezco su pronta respuesta, para la confirmación de esta carta pueden comunicarse al número 2425-9700 al departamento de contabilidad.</p>
+                    <p></p>
+                    <p><strong>Atentamente,</strong></p>
+                </div>
+                
+                <div class="letter-signature">
+                    <div class="signature-line"></div>
+                    <p><strong>EMELY LIZETH JIMENEZ FLORIAN</strong></p>
+                    <p>19 calle 5-47 zona 10 Edificio Unicentro nivel 13 oficina 1302</p>
+<p>ejimenez@presta.express</p>
+                </div>
+            `;
+        }
+
+        // Continuar con las demás funciones de generación...
+        function generarChequeRetenido(datos, fecha) {
+            const montoFormateado = formatearMonto(datos.monto || '0');
+            const dpiFormateado = formatearDPIDisplay(datos.dpi || '');
+            
+            return `
+                <div class="letter-header">
+                    <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 30px; margin-top: 100px;">
+                    <strong>${fecha}</strong>
+                </div>
+                
+                <div class="letter-body" style="margin-bottom: 60px;">
+                    <p><strong>Señores:</strong></p>
+                    <p><strong>${datos.empresa || 'PRESTA EXPRESS, SOCIEDAD ANÓNIMA.'}</strong></p>
+                    <p><strong>Presente</strong></p>
+                    <p></p>
+                    <p><strong>Estimados Señores:</strong></p>
+                    <p></p>
+                    <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${(datos.nombreCompleto || '').toUpperCase()}</strong>, me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) ${dpiFormateado}, extendido por el Registro Nacional de las Personas, solicito que del cheque retenido número <strong>${datos.numeroCheque || ''}</strong> por un monto de <strong>${montoFormateado}</strong> sea trasladado para el saldo de mi crédito.</p>
+                    <p></p>
+                    <p>Esperando su apoyo y agradecimiento de antemano.</p>
+                </div>
+                
+                <div class="letter-signature" style="margin-top: 100px;">
+                    <div class="signature-line"></div>
+                    <p><strong>F. ${(datos.nombreCompleto || '').toUpperCase()}</strong></p>
+                    <p><strong>DPI ${dpiFormateado}</strong></p>
+                </div>
+            `;
+        }
+
+        // ... continuar con el resto de funciones
+        
+        // Funciones auxiliares
+        function numeroALetrasCompleto(numero) {
+            // Implementación completa como en el código anterior
             if (numero === 0) return 'cero';
             
             const unidades = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve'];
@@ -498,35 +1690,31 @@
 
             let resultado = '';
 
-            // Manejar millones
             if (numero >= 1000000) {
                 const millones = Math.floor(numero / 1000000);
                 if (millones === 1) {
                     resultado += 'un millón ';
                 } else {
-                    resultado += numeroALetras(millones) + ' millones ';
+                    resultado += numeroALetrasCompleto(millones) + ' millones ';
                 }
                 numero = numero % 1000000;
             }
 
-            // Manejar miles
             if (numero >= 1000) {
                 const miles = Math.floor(numero / 1000);
                 if (miles === 1) {
                     resultado += 'mil ';
                 } else {
-                    resultado += numeroALetras(miles) + ' mil ';
+                    resultado += numeroALetrasCompleto(miles) + ' mil ';
                 }
                 numero = numero % 1000;
             }
 
-            // Manejar centenas
             if (numero >= 100) {
                 resultado += centenas[Math.floor(numero / 100)] + ' ';
                 numero = numero % 100;
             }
 
-            // Manejar decenas y unidades
             if (numero >= 20) {
                 resultado += decenas[Math.floor(numero / 10)];
                 if (numero % 10 > 0) {
@@ -541,66 +1729,6 @@
             return resultado.trim();
         }
 
-        // Función para formatear DPI (agregar espacios si no los tiene)
-        function formatearDPI(dpi) {
-            const soloNumeros = dpi.replace(/\s/g, '');
-            
-            console.log('DPI solo números:', soloNumeros, 'longitud:', soloNumeros.length); // Para debug
-            
-            // Si tiene 13 dígitos, formatear como XXXX XXXXX XXXX
-            if (soloNumeros.length === 13) {
-                return soloNumeros.substring(0, 4) + ' ' + soloNumeros.substring(4, 9) + ' ' + soloNumeros.substring(9, 13);
-            }
-            // Si tiene menos dígitos, intentar formatear de manera inteligente
-            else if (soloNumeros.length >= 8) {
-                // Para DPIs más cortos, dividir en 3 partes lo más equilibrado posible
-                const tercio = Math.ceil(soloNumeros.length / 3);
-                const parte1 = soloNumeros.substring(0, tercio);
-                const parte2 = soloNumeros.substring(tercio, tercio * 2);
-                const parte3 = soloNumeros.substring(tercio * 2);
-                return parte1 + ' ' + parte2 + ' ' + parte3;
-            }
-            
-            // Si ya tiene el formato correcto o es muy corto, devolverlo tal como está
-            return dpi;
-        }
-
-        // Función para convertir DPI a formato de letras
-        function dpiALetras(dpi) {
-            console.log('DPI recibido:', dpi); // Para debug
-            
-            const dpiFormateado = formatearDPI(dpi);
-            console.log('DPI formateado:', dpiFormateado); // Para debug
-            
-            const partes = dpiFormateado.split(' ');
-            
-            if (partes.length !== 3) {
-                console.log('Error: DPI no tiene 3 partes:', partes);
-                return dpi;
-            }
-            
-            const parte1 = numeroALetras(parseInt(partes[0]));
-            const parte2 = numeroALetras(parseInt(partes[1]));
-            
-            let parte3;
-            const terceraParte = partes[2];
-            if (terceraParte.startsWith('0')) {
-                if (terceraParte.length === 4 && terceraParte.startsWith('0')) {
-                    parte3 = 'cero ' + numeroALetras(parseInt(terceraParte.substring(1)));
-                } else {
-                    parte3 = numeroALetras(parseInt(terceraParte));
-                }
-            } else {
-                parte3 = numeroALetras(parseInt(terceraParte));
-            }
-            
-            const resultado = parte1 + ' espacio ' + parte2 + ' espacio ' + parte3 + ' (' + dpiFormateado + ')';
-            console.log('Resultado DPI en letras:', resultado); // Para debug
-            
-            return resultado;
-        }
-
-        // Función para detectar género por nombre
         function detectarGenero(nombre) {
             const nombreLimpio = nombre.toLowerCase().trim();
             const primerNombre = nombreLimpio.split(' ')[0];
@@ -612,41 +1740,12 @@
                 'martha', 'gloria', 'teresa', 'isabel', 'cristina', 'silvia',
                 'beatriz', 'adriana', 'jessica', 'karen', 'michelle', 'stephanie',
                 'fernanda', 'mariana', 'rocio', 'veronica', 'leticia', 'nancy',
-                'wendy', 'yolanda', 'susana', 'diana', 'lorena', 'emely', 'dora',
-                'evelyn', 'kimberly', 'brenda', 'cynthia', 'leslie', 'sheila',
-                'marlene', 'ingrid', 'pamela', 'sonia', 'lidia', 'marta'
+                'wendy', 'yolanda', 'susana', 'diana', 'lorena', 'emely'
             ];
             
-            const terminacionesFemeninas = ['a', 'ia', 'ina', 'ela', 'isa', 'esa', 'lyn'];
-            
-            if (nombresFemeninos.includes(primerNombre)) {
-                return 'femenino';
-            }
-            
-            for (let terminacion of terminacionesFemeninas) {
-                if (primerNombre.endsWith(terminacion)) {
-                    return 'femenino';
-                }
-            }
-            
-            return 'masculino';
+            return nombresFemeninos.includes(primerNombre) ? 'femenino' : 'masculino';
         }
 
-        // Función para ajustar estado civil según género
-        function ajustarEstadoCivil(estadoCivil, genero) {
-            if (genero === 'femenino') {
-                switch(estadoCivil.toLowerCase()) {
-                    case 'casado': return 'casada';
-                    case 'soltero': return 'soltera';
-                    case 'divorciado': return 'divorciada';
-                    case 'viudo': return 'viuda';
-                    default: return estadoCivil;
-                }
-            }
-            return estadoCivil;
-        }
-
-        // Función para formatear montos en quetzales
         function formatearMonto(monto) {
             if (monto.toString().includes('Q')) return monto;
             
@@ -661,8 +1760,196 @@
             });
         }
 
-        // Función para formatear fecha en letras
+        function formatearDPIDisplay(dpi) {
+            const soloNumeros = dpi.replace(/\s/g, '');
+            if (soloNumeros.length === 13) {
+                return soloNumeros.substring(0, 4) + ' ' + soloNumeros.substring(4, 9) + ' ' + soloNumeros.substring(9, 13);
+            }
+            return dpi;
+        }
+
+        // Funciones para generar las demás cartas (implementar todas)
+       function generarAutorizacionTransferencia(datos, fecha) {
+    const numeroEscrituraEnLetras = numeroALetrasCompleto(parseInt(datos.numeroEscritura || 0));
+    const tipoContrato = datos.tipoContrato || 'MUTUO, GARANTÍA HIPOTECARIA';
+    const fechaEnLetrasTexto = fechaEnLetras(datos.fecha);
+    const genero = detectarGenero(datos.nombreCompleto || '');
+    const nacionalidad = genero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
+    const estadoCivilAjustado = ajustarEstadoCivil(datos.estadoCivil, genero);
+    const numeroCuentaFormateado = '-' + datos.numeroCuenta + '-';
+    const dpiFormateado = formatearDPIDisplay(datos.dpi || '');
+    
+    // Determinar el nombre de la cuenta
+    let nombreCuentaFinal = '';
+    if (datos.tipoNombreCuenta === 'mismo') {
+        nombreCuentaFinal = (datos.nombreCompleto || '').toUpperCase();
+    } else if (datos.tipoNombreCuenta === 'otro' && datos.nombreCuenta) {
+        nombreCuentaFinal = datos.nombreCuenta.toUpperCase();
+    } else {
+        nombreCuentaFinal = (datos.nombreCompleto || '').toUpperCase(); // Por defecto
+    }
+    
+    return `
+        <div class="letter-header">
+            <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+        </div>
+        
+        <div style="text-align: left; margin-bottom: 30px;">
+            <strong>${fecha}</strong>
+        </div>
+        
+        <div class="letter-body" style="margin-bottom: 60px;">
+            <p><strong>Señores:</strong></p>
+            <p><strong>${datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.'}</strong></p>
+            <p><strong>Presente</strong></p>
+            <p></p>
+            <p><strong>Estimados Señores:</strong></p>
+            <p></p>
+            <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${(datos.nombreCompleto || '').toUpperCase()}</strong>, de ${datos.edadLetras || ''} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiFormateado}, extendido por el Registro Nacional de las Personas; autorizo que del contrato de <strong>${tipoContrato}</strong> realizado por medio de la escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura || ''}) autorizada en esta ciudad el día ${fechaEnLetrasTexto} por la notaria ${datos.notario || 'María Olga Arce Godoy'}, se realicen transferencia al número de cuenta ${numeroCuentaFormateado} a nombre de <strong>${nombreCuentaFinal}</strong>, cuenta monetaria de ${datos.banco || ''}.</p>
+            <p></p>
+            <p>Esperando su apoyo y agradecimiento de antemano.</p>
+        </div>
+        
+        <div class="letter-signature" style="margin-top: 80px;">
+            <div class="signature-line"></div>
+            <p><strong>${(datos.nombreCompleto || '').toUpperCase()}</strong></p>
+            <p><strong>${dpiFormateado}</strong></p>
+        </div>
+    `;
+}
+
+        function generarAutorizacionTerceros(datos, fecha) {
+            const edadTerceroEnLetras = numeroALetras(parseInt(datos.edadTercero || 0));
+            const numeroEscrituraEnLetras = numeroALetrasCompleto(parseInt(datos.numeroEscritura || 0));
+const tipoContrato = datos.tipoContrato || 'MUTUO';
+            const fechaEnLetrasTexto = fechaEnLetras(datos.fecha);
+            const genero = detectarGenero(datos.nombreCompleto || '');
+            const generoTercero = detectarGenero(datos.nombreTercero || '');
+            const nacionalidad = genero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
+            const nacionalidadTercero = generoTercero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
+            const estadoCivilAjustado = ajustarEstadoCivil(datos.estadoCivil, genero);
+            const estadoCivilTerceroAjustado = ajustarEstadoCivil(datos.estadoCivilTercero, generoTercero);
+            const dpiFormateado = formatearDPIDisplay(datos.dpi || '');
+            const dpiTerceroFormateado = formatearDPIDisplay(datos.dpiTercero || '');
+            
+            return `
+                <div class="letter-header">
+                    <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 30px;">
+                    <strong>${fecha}</strong>
+                </div>
+                
+                <div class="letter-body" style="margin-bottom: 60px;">
+                    <p><strong>Señores:</strong></p>
+                    <p><strong>${datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.'}</strong></p>
+                    <p><strong>Presente</strong></p>
+                    <p></p>
+                    <p><strong>Estimados Señores:</strong></p>
+                    <p></p>
+                    <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${(datos.nombreCompleto || '').toUpperCase()}</strong>, de ${datos.edadLetras || ''} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiFormateado}, extendido por el Registro Nacional de las Personas; autorizo que del contrato de <strong>${tipoContrato}</strong> realizado por medio de la escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura || ''}) autorizada en esta ciudad el día ${fechaEnLetrasTexto} por la notaria ${datos.notario || 'María Olga Arce Godoy'}, se realicen los cheques a nombre únicamente de <strong>${(datos.nombreTercero || '').toUpperCase()}</strong>, de ${edadTerceroEnLetras} años, ${estadoCivilTerceroAjustado}, ${nacionalidadTercero}, de este domicilio, quien se identifica con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiTerceroFormateado}, extendido por el Registro Nacional de las Personas de la República de Guatemala.</p>
+                    <p></p>
+                    <p>Esperando su apoyo y agradecimiento de antemano.</p>
+                </div>
+                
+                <div class="letter-signature" style="margin-top: 80px;">
+                    <div style="display: flex; justify-content: space-around; margin-top: 50px;">
+                        <div style="text-align: center;">
+                            <div style="border-top: 1pt solid #333; width: 250px; margin: 0 auto 10px;"></div>
+                            <p><strong>${(datos.nombreCompleto || '').toUpperCase()}</strong></p>
+                            <p><strong>${dpiFormateado}</strong></p>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="border-top: 1pt solid #333; width: 250px; margin: 0 auto 10px;"></div>
+                            <p><strong>${(datos.nombreTercero || '').toUpperCase()}</strong></p>
+                            <p><strong>${dpiTerceroFormateado}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generarOrdenesPago(datos, fecha) {
+            const monto1 = formatearMonto(datos.montoRetencion1 || '30000');
+            const monto2 = formatearMonto(datos.montoRetencion2 || '2000');
+            const tipoContrato = datos.tipoContrato || 'MUTUO CON GARANTÍA HIPOTECARIA';
+            const fechaDiaMes = fechaSoloDiaMes(datos.fecha);
+            
+            // Generar retenciones adicionales
+            let retencionesHTML = '';
+            if (retenciones && retenciones.length > 0) {
+                retenciones.forEach((retencion, index) => {
+                    if (retencion.nombre && retencion.monto) {
+                        const montoFormateado = formatearMonto(retencion.monto);
+                        retencionesHTML += `
+                            <p></p>
+                            <p>${index + 3}. <strong>${retencion.nombre.toUpperCase()}: ${montoFormateado}</strong></p>
+                        `;
+                    }
+                });
+            }
+            
+            return `
+                <div class="letter-header">
+                    <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
+                </div>
+                
+                <div style="text-align: left; margin-bottom: 30px;">
+                    <strong>${fecha}</strong>
+                </div>
+                
+                <div class="letter-body">
+                    <p><strong>Señores:</strong></p>
+                    <p><strong>${datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.'}</strong></p>
+                    <p><strong>Presente</strong></p>
+                    <p></p>
+                    <p><strong>Estimados Señores:</strong></p>
+                    <p></p>
+                    <p>Deseándoles éxitos en sus labores diarias, me permito hacer de su conocimiento que, YO, <strong>${(datos.nombreCompleto || '').toUpperCase()}</strong>, de ${datos.edadLetras || ''} años, ${datos.estadoCivil || ''}, ${datos.nacionalidad || ''}, ${datos.profesion || ''}, de este domicilio, me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) ${datos.dpi || ''}, extendido por el Registro Nacional de las Personas de la República de Guatemala.</p>
+                    <p></p>
+                    <p>En virtud del contrato de <strong>${tipoContrato}</strong>, realizado mediante escritura autorizada en esta ciudad el día ${fechaDiaMes} por la notaria ${datos.notario || 'María Olga Arce Godoy'}, se me han entregado las órdenes de pago que a continuación se detallan, como explicación de manera verbal sobre los procesos incluyendo la información sobre como se va realizar el avalúo y los tiempos en cada trámite así poder hacer la entrega de las mismas:</p>
+                    <p></p>
+                    <p>1. <strong>RETENER HASTA ESTAR INSCRITO EN EL REGISTRO GENERAL DE LA PROPIEDAD Y TENER REALIZADO AVALÚO CON EMPRESA EXTERNA: ${monto1}</strong></p>
+                    <p></p>
+                    <p>2. <strong>RETENER HASTA TENER CERTIFICACIÓN DE NOMENCLATURA REVISADA POR LEGAL: ${monto2}</strong></p>
+                    ${retencionesHTML}
+                    <p></p>
+                    <p>Confirmo que se me están entregando las órdenes de pago, las cuales debo presentar en original cada vez que venga por mis cheques retenidos.</p>
+                    <p></p>
+                    <p>Agradezco de antemano su apoyo y quedo a la espera de su pronta respuesta.</p>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+                
+                <div class="letter-signature">
+                    <div class="signature-line"></div>
+                    <p><strong>${(datos.nombreCompleto || '').toUpperCase()}</strong></p>
+                    <p><strong>${formatearDPIDisplay(datos.dpi || '')}</strong></p>
+                </div>
+            `;
+        }
+
+        // Funciones auxiliares adicionales
+        function ajustarEstadoCivil(estadoCivil, genero) {
+            if (!estadoCivil) return '';
+            if (genero === 'femenino') {
+                switch(estadoCivil.toLowerCase()) {
+                    case 'casado': return 'casada';
+                    case 'soltero': return 'soltera';
+                    case 'divorciado': return 'divorciada';
+                    case 'viudo': return 'viuda';
+                    default: return estadoCivil;
+                }
+            }
+            return estadoCivil;
+        }
+
         function fechaEnLetras(fecha) {
+            if (!fecha) return '';
+            
             const meses = [
                 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
                 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
@@ -673,308 +1960,52 @@
             const mes = meses[fechaObj.getMonth()];
             const año = fechaObj.getFullYear();
             
-            const diaEnLetras = numeroALetras(dia);
+            const diaEnLetras = numeroALetrasCompleto(dia);
             
             return diaEnLetras + ' de ' + mes + ' de ' + año;
         }
 
-        function generarCartas() {
-            const cartasSeleccionadas = obtenerCartasSeleccionadas();
+        function fechaSoloDiaMes(fecha) {
+            if (!fecha) return '';
             
-            if (cartasSeleccionadas.length === 0) {
-                alert('Por favor selecciona al menos una carta para generar.');
-                return;
-            }
-
-            if (!validarCamposRequeridos(cartasSeleccionadas)) {
-                alert('Por favor completa todos los campos requeridos.');
-                return;
-            }
-
-            const datos = obtenerDatosFormulario();
-            let contenidoHTML = '';
-
-            cartasSeleccionadas.forEach((tipoCarta, index) => {
-                if (index > 0) {
-                    contenidoHTML += '<div style="page-break-before: always; margin-top: 50px; border-top: 3px solid #ff6b35; padding-top: 30px;"></div>';
-                }
-                contenidoHTML += generarCarta(tipoCarta, datos);
-            });
-
-            document.getElementById('letterContent').innerHTML = contenidoHTML;
-            document.getElementById('letterOutput').style.display = 'block';
+            const meses = [
+                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+            ];
             
-            document.getElementById('letterOutput').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function obtenerCartasSeleccionadas() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
-        }
-
-        function validarCamposRequeridos(cartasSeleccionadas) {
-            const camposBasicos = ['nombreCompleto', 'edad', 'estadoCivil', 'profesion', 'dpi'];
+            const fechaObj = new Date(fecha + 'T00:00:00');
+            const dia = fechaObj.getDate();
+            const mes = meses[fechaObj.getMonth()];
             
-            for (let campo of camposBasicos) {
-                if (!document.getElementById(campo).value.trim()) {
-                    return false;
-                }
-            }
-
-            if (cartasSeleccionadas.includes('constancia')) {
-                if (!document.getElementById('empresa').value.trim() || !document.getElementById('monto').value.trim()) {
-                    return false;
-                }
-            }
-
-            if (cartasSeleccionadas.includes('cheque')) {
-                if (!document.getElementById('numeroCheque').value.trim() || !document.getElementById('monto').value.trim()) {
-                    return false;
-                }
-            }
-
-            if (cartasSeleccionadas.includes('transferencia')) {
-                if (!document.getElementById('numeroCuenta').value.trim() || !document.getElementById('banco').value.trim()) {
-                    return false;
-                }
-            }
-
-            if (cartasSeleccionadas.includes('terceros')) {
-                if (!document.getElementById('nombreTercero').value.trim() || !document.getElementById('dpiTercero').value.trim()) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        function obtenerDatosFormulario() {
-            const empresaSelect = document.getElementById('empresa').value;
-            const empresaFinal = empresaSelect === 'otra' ? 
-                document.getElementById('empresaOtra').value : 
-                empresaSelect;
-
-            const tipoContratoSelect = document.getElementById('tipoContrato').value;
-            const tipoContratoFinal = tipoContratoSelect === 'otro' ? 
-                document.getElementById('tipoContratoOtro').value : 
-                tipoContratoSelect;
-
-            return {
-                nombreCompleto: document.getElementById('nombreCompleto').value,
-                edad: document.getElementById('edad').value,
-                estadoCivil: document.getElementById('estadoCivil').value,
-                profesion: document.getElementById('profesion').value,
-                dpi: document.getElementById('dpi').value,
-                empresa: empresaFinal,
-                monto: document.getElementById('monto').value,
-                fecha: document.getElementById('fecha').value,
-                numeroEscritura: document.getElementById('numeroEscritura').value,
-                numeroCheque: document.getElementById('numeroCheque').value,
-                numeroCuenta: document.getElementById('numeroCuenta').value,
-                banco: document.getElementById('banco').value,
-                notario: document.getElementById('notario').value,
-                tipoContrato: tipoContratoFinal,
-                nombreTercero: document.getElementById('nombreTercero').value,
-                edadTercero: document.getElementById('edadTercero').value,
-                estadoCivilTercero: document.getElementById('estadoCivilTercero').value,
-                dpiTercero: document.getElementById('dpiTercero').value
-            };
-        }
-
-        function generarCarta(tipo, datos) {
-            let fechaFormateada;
-            if (datos.fecha) {
-                const fecha = new Date(datos.fecha + 'T00:00:00');
-                fechaFormateada = fecha.toLocaleDateString('es-GT', { 
-                    day: '2-digit', 
-                    month: 'long', 
-                    year: 'numeric' 
-                });
-            } else {
-                fechaFormateada = new Date().toLocaleDateString('es-GT', { 
-                    day: '2-digit', 
-                    month: 'long', 
-                    year: 'numeric' 
-                });
-            }
-
-            switch (tipo) {
-                case 'constancia':
-                    return generarConstanciaFondos(datos, fechaFormateada);
-                case 'cheque':
-                    return generarChequeRetenido(datos, fechaFormateada);
-                case 'transferencia':
-                    return generarAutorizacionTransferencia(datos, fechaFormateada);
-                case 'terceros':
-                    return generarAutorizacionTerceros(datos, fechaFormateada);
-                default:
-                    return '';
-            }
-        }
-
-        function generarConstanciaFondos(datos, fecha) {
-            const dpiFormateado = formatearDPI(datos.dpi);
-            const dpiEnLetras = dpiALetras(datos.dpi);
-            const numeroEscrituraEnLetras = numeroALetras(parseInt(datos.numeroEscritura));
-            const edadEnLetras = numeroALetras(parseInt(datos.edad));
-            const genero = detectarGenero(datos.nombreCompleto);
-            const nacionalidad = genero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
-            const estadoCivilAjustado = ajustarEstadoCivil(datos.estadoCivil, genero);
-            const montoFormateado = formatearMonto(datos.monto);
-            const tratamiento = genero === 'femenino' ? 'Sra' : 'Sr';
+            const diaEnLetras = numeroALetrasCompleto(dia);
             
-            return `
-                <div class="letter-header">
-                    <strong>Guatemala, ${fecha}</strong>
-                </div>
-                <div class="letter-body">
-                    <p><strong>Señores:</strong></p>
-                    <p><strong>Presentes</strong></p>
-                    <br>
-                    <p><strong>Estimado jefe de Agencia,</strong></p>
-                    <br>
-                    <p>Espero que esta carta le encuentre bien. Me dirijo a usted para proporcionar información sobre la procedencia de los fondos del <strong>${tratamiento}. ${datos.nombreCompleto}</strong>, de ${edadEnLetras} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion}, de este domicilio, quien me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) número ${dpiEnLetras}.</p>
-                    <br>
-                    <p>El origen de los fondos proviene de la autorización de crédito con garantía hipotecaria / <strong>${datos.empresa}</strong>.</p>
-                    <br>
-                    <p>De escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura}) por un monto de ${montoFormateado} los cuales se componen de gastos administrativos, legales y líquido del cliente.</p>
-                    <br>
-                    <p>Quedo a su disposición para cualquier consulta adicional y agradezco su pronta respuesta, para la confirmación de esta carta pueden comunicarse al número 2425-9700 al departamento de contabilidad.</p>
-                    <br>
-                    <p><strong>Atentamente,</strong></p>
-                </div>
-                <div class="letter-signature">
-                    <div class="signature-line"></div>
-                    <p><strong>EMELY LIZETH JIMENEZ FLORIAN</strong></p>
-                    <p>19 calle 5-47 zona 10 Edificio Unicentro nivel 13 oficina 1302</p>
-                    <p>ejimenez@presta.express</p>
-                </div>
-            `;
+            return diaEnLetras + ' de ' + mes;
         }
 
-        function generarChequeRetenido(datos, fecha) {
-            const montoFormateado = formatearMonto(datos.monto);
-            const dpiFormateado = formatearDPI(datos.dpi);
+        // Nueva carta
+        function nuevaCarta() {
+            // Reset del estado pero mantener datos guardados
+            currentStep = 1;
+            selectedCarta = '';
             
-            return `
-                <div class="letter-header">
-                    <strong>Guatemala, ${fecha}</strong>
-                </div>
-                <div class="letter-body" style="margin-top: 120px; margin-bottom: 60px;">
-                    <p><strong>Señores:</strong></p>
-                    <p><strong>PRESTA EXPRESS, SOCIEDAD ANÓNIMA.</strong></p>
-                    <p><strong>Presente</strong></p>
-                    <br>
-                    <p><strong>Estimados Señores:</strong></p>
-                    <br>
-                    <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${datos.nombreCompleto}</strong>, me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) ${dpiFormateado}, extendido por el Registro Nacional de las Personas, solicito que del cheque retenido número ${datos.numeroCheque} por un monto de ${montoFormateado} sea trasladado para el saldo de mi crédito.</p>
-                    <br>
-                    <p>Esperando su apoyo y agradecimiento de antemano.</p>
-                </div>
-                <div class="letter-signature" style="margin-top: 100px;">
-                    <div class="signature-line"></div>
-                    <p><strong>${datos.nombreCompleto}</strong></p>
-                    <p>DPI ${dpiFormateado}</p>
-                </div>
-            `;
-        }
-
-        function generarAutorizacionTransferencia(datos, fecha) {
-            const edadEnLetras = numeroALetras(parseInt(datos.edad));
-            const numeroEscrituraEnLetras = numeroALetras(parseInt(datos.numeroEscritura));
-            const tipoContrato = datos.tipoContrato || 'MUTUO, GARANTÍA HIPOTECARIA';
-            const fechaEnLetrasTexto = fechaEnLetras(datos.fecha);
-            const genero = detectarGenero(datos.nombreCompleto);
-            const nacionalidad = genero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
-            const estadoCivilAjustado = ajustarEstadoCivil(datos.estadoCivil, genero);
-            const numeroCuentaFormateado = '-' + datos.numeroCuenta + '-';
-            const dpiFormateado = formatearDPI(datos.dpi);
+            // Limpiar copropietarios y retenciones
+            copropietarios = [];
+            contadorCopropietarios = 0;
+            retenciones = [];
+            contadorRetenciones = 0;
             
-            return `
-                <div class="letter-header">
-                    <strong>Guatemala, ${fecha}</strong>
-                </div>
-                <div class="letter-body" style="margin-top: 60px; margin-bottom: 60px;">
-                    <p><strong>Señores:</strong></p>
-                    <p><strong>${datos.empresa}</strong></p>
-                    <p><strong>Presente</strong></p>
-                    <br>
-                    <p><strong>Estimados Señores:</strong></p>
-                    <br>
-                    <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${datos.nombreCompleto}</strong>, de ${edadEnLetras} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion}, de este domicilio, quien me identifico con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiFormateado}, extendido por el Registro Nacional de las Personas; autorizo que del contrato de <strong>${tipoContrato}</strong> realizado por medio de la escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura}) autorizada en esta ciudad el día ${fechaEnLetrasTexto} por la notaria ${datos.notario}, se realicen transferencia al número de cuenta ${numeroCuentaFormateado} a nombre de <strong>${datos.nombreCompleto}</strong>, cuenta monetaria de ${datos.banco}.</p>
-                    <br>
-                    <p>Esperando su apoyo y agradecimiento de antemano.</p>
-                </div>
-                <div class="letter-signature" style="margin-top: 80px;">
-                    <div class="signature-line"></div>
-                    <p><strong>${datos.nombreCompleto}</strong></p>
-                    <p>${dpiFormateado}</p>
-                </div>
-            `;
-        }
-
-        function generarAutorizacionTerceros(datos, fecha) {
-            const edadEnLetras = numeroALetras(parseInt(datos.edad));
-            const edadTerceroEnLetras = numeroALetras(parseInt(datos.edadTercero));
-            const numeroEscrituraEnLetras = numeroALetras(parseInt(datos.numeroEscritura));
-            const tipoContrato = datos.tipoContrato || 'MUTUO';
-            const fechaEnLetrasTexto = fechaEnLetras(datos.fecha);
-            const genero = detectarGenero(datos.nombreCompleto);
-            const generoTercero = detectarGenero(datos.nombreTercero);
-            const nacionalidad = genero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
-            const nacionalidadTercero = generoTercero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
-            const estadoCivilAjustado = ajustarEstadoCivil(datos.estadoCivil, genero);
-            const estadoCivilTerceroAjustado = ajustarEstadoCivil(datos.estadoCivilTercero, generoTercero);
-            const dpiFormateado = formatearDPI(datos.dpi);
-            const dpiTerceroFormateado = formatearDPI(datos.dpiTercero);
+            // Remover selecciones
+            document.querySelectorAll('.carta-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('btnSiguiente').disabled = true;
             
-            return `
-                <div class="letter-header">
-                    <strong>Guatemala, ${fecha}</strong>
-                </div>
-                <div class="letter-body" style="margin-top: 60px; margin-bottom: 60px;">
-                    <p><strong>Señores:</strong></p>
-                    <p><strong>${datos.empresa}</strong></p>
-                    <p><strong>Presente</strong></p>
-                    <br>
-                    <p><strong>Estimados Señores:</strong></p>
-                    <br>
-                    <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${datos.nombreCompleto}</strong>, de ${edadEnLetras} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion}, de este domicilio, quien me identifico con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiFormateado}, extendido por el Registro Nacional de las Personas; autorizo que del contrato de <strong>${tipoContrato}</strong> realizado por medio de la escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura}) autorizada en esta ciudad el día ${fechaEnLetrasTexto} por la notaria ${datos.notario}, se realicen los cheques a nombre únicamente de <strong>${datos.nombreTercero}</strong>, de ${edadTerceroEnLetras} años, ${estadoCivilTerceroAjustado}, ${nacionalidadTercero}, ${datos.profesion}, de este domicilio, quien se identifica con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiTerceroFormateado}, extendido por el Registro Nacional de las Personas de la República de Guatemala.</p>
-                    <br>
-                    <p>Esperando su apoyo y agradecimiento de antemano.</p>
-                </div>
-                <div class="letter-signature" style="margin-top: 80px;">
-                    <div style="display: flex; justify-content: space-around; margin-top: 50px;">
-                        <div style="text-align: center;">
-                            <div style="border-top: 2px solid #333; width: 250px; margin: 0 auto 10px;"></div>
-                            <p><strong>${datos.nombreCompleto}</strong></p>
-                            <p>${dpiFormateado}</p>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="border-top: 2px solid #333; width: 250px; margin: 0 auto 10px;"></div>
-                            <p><strong>${datos.nombreTercero}</strong></p>
-                            <p>${dpiTerceroFormateado}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+            // Ocultar resultado
+            document.getElementById('letterOutput').style.display = 'none';
+            
+            // Volver al paso 1
+            cambiarPaso(1);
         }
 
-        function limpiarFormulario() {
-            if (confirm('¿Estás seguro de que quieres limpiar todos los campos?')) {
-                document.querySelectorAll('input, select, textarea').forEach(element => {
-                    element.value = '';
-                });
-                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                    cb.checked = false;
-                });
-                // Restablecer valores por defecto
-                document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
-                document.getElementById('notario').value = 'María Olga Arce Godoy';
-                document.getElementById('letterOutput').style.display = 'none';
-            }
-        }
-
+        // Funciones de impresión y copia (mantener del código anterior)
         function imprimirCarta() {
             const contenido = document.getElementById('letterContent').innerHTML;
             const ventanaImpresion = window.open('', '_blank');
@@ -985,13 +2016,13 @@
                         <style>
                             @page {
                                 size: A4;
-                                margin: 2.5cm 3cm 2.5cm 3cm;
+                                margin: 3cm 2.5cm 2.5cm 2.5cm;
                             }
                             
                             body { 
-                                font-family: 'Times New Roman', serif; 
-                                font-size: 10pt;
-                                line-height: 1.3; 
+                                font-family: 'Arial', sans-serif; 
+                                font-size: 11pt;
+                                line-height: 1.4; 
                                 color: #000;
                                 margin: 0;
                                 padding: 0;
@@ -999,41 +2030,41 @@
                             }
                             
                             .letter-header { 
-                                text-align: right; 
+                                text-align: center; 
                                 margin-bottom: 25px;
                                 font-weight: normal;
-                                font-size: 10pt;
+                                font-size: 11pt;
+                            }
+                            
+                            .letter-header img {
+                                width: 150px;
+                                height: auto;
+                                margin-bottom: 20px;
                             }
                             
                             .letter-body { 
-                                text-align: justify; 
+                                text-align: left; 
                                 margin-bottom: 25px;
                                 text-indent: 0;
                             }
                             
                             .letter-body p {
-                                margin-bottom: 12px;
-                                text-align: justify;
-                                line-height: 1.3;
+                                margin-bottom: 15px;
+                                text-align: left;
+                                line-height: 1.4;
                                 text-indent: 0;
-                            }
-                            
-                            .letter-body br {
-                                display: block;
-                                content: "";
-                                margin-top: 6px;
                             }
                             
                             .letter-signature { 
                                 margin-top: 40px; 
                                 text-align: center; 
                                 page-break-inside: avoid;
-                                font-size: 10pt;
+                                font-size: 11pt;
                             }
                             
                             .signature-line { 
-                                border-top: 1px solid #000; 
-                                width: 280px; 
+                                border-top: 1pt solid #000; 
+                                width: 300px; 
                                 margin: 40px auto 12px auto; 
                             }
                             
@@ -1041,61 +2072,10 @@
                                 font-weight: bold;
                             }
                             
-                            /* Estilos para firmas dobles */
-                            div[style*="display: flex"] {
-                                display: flex !important;
-                                justify-content: space-around !important;
-                                margin-top: 40px !important;
-                                page-break-inside: avoid;
-                            }
-                            
-                            div[style*="display: flex"] > div {
-                                text-align: center !important;
-                                flex: 1 !important;
-                                font-size: 10pt;
-                            }
-                            
-                            div[style*="border-top: 2px solid"] {
-                                border-top: 1px solid #000 !important;
-                                width: 220px !important;
-                                margin: 40px auto 12px auto !important;
-                            }
-                            
-                            /* Eliminar colores y fondos para impresión */
                             * {
                                 color: black !important;
                                 background: white !important;
                                 border-color: black !important;
-                            }
-                            
-                            /* Salto de página entre cartas */
-                            div[style*="page-break-before"] {
-                                page-break-before: always !important;
-                                border-top: none !important;
-                                padding-top: 0 !important;
-                                margin-top: 0 !important;
-                            }
-                            
-                            /* Reducir espacios innecesarios */
-                            .letter-body p:first-child {
-                                margin-top: 0;
-                            }
-                            
-                            .letter-body p:last-child {
-                                margin-bottom: 15px;
-                            }
-                            
-                            /* Asegurar que las firmas no se corten pero con menos espacio */
-                            .letter-signature, 
-                            div[style*="display: flex"] {
-                                page-break-inside: avoid;
-                                orphans: 2;
-                                widows: 2;
-                            }
-                            
-                            /* Compactar los saltos de línea */
-                            .letter-body p + br + p {
-                                margin-top: 6px;
                             }
                         </style>
                     </head>

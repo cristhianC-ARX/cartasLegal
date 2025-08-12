@@ -916,7 +916,10 @@
                             <div class="form-col">
                                 <div class="form-group">
                                     <label for="nacionalidad">Nacionalidad</label>
-                                    <input type="text" id="nacionalidad" value="guatemalteco/a">
+                                    <select id="nacionalidad">
+    <option value="guatemalteco">Guatemalteco</option>
+    <option value="guatemalteca">Guatemalteca</option>
+</select>
                                 </div>
                             </div>
                             <div class="form-col">
@@ -1055,6 +1058,18 @@
             <input type="text" id="banco" placeholder="Ej: Banco Industrial" required>
         </div>
     </div>
+
+    <div class="form-col">
+    <div class="form-group">
+        <label for="tipoCuenta">Tipo de Cuenta *</label>
+        <select id="tipoCuenta" required>
+            <option value="">Seleccionar...</option>
+            <option value="monetaria">Monetaria</option>
+            <option value="ahorro">Ahorro</option>
+        </select>
+    </div>
+</div>
+    
     <div class="form-col">
         <div class="form-group">
             <label for="nombreCuenta">Nombre de la Cuenta *</label>
@@ -1775,7 +1790,7 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
     const tipoContrato = datos.tipoContrato || 'MUTUO, GARANTÍA HIPOTECARIA';
     const fechaEnLetrasTexto = fechaEnLetras(datos.fecha);
     const genero = detectarGenero(datos.nombreCompleto || '');
-    const nacionalidad = genero === 'femenino' ? 'guatemalteca' : 'guatemalteco';
+const nacionalidad = datos.nacionalidad || (genero === 'femenino' ? 'guatemalteca' : 'guatemalteco');
     const estadoCivilAjustado = ajustarEstadoCivil(datos.estadoCivil, genero);
     const numeroCuentaFormateado = '-' + datos.numeroCuenta + '-';
     const dpiFormateado = formatearDPIDisplay(datos.dpi || '');
@@ -1806,7 +1821,8 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
             <p></p>
             <p><strong>Estimados Señores:</strong></p>
             <p></p>
-            <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${(datos.nombreCompleto || '').toUpperCase()}</strong>, de ${datos.edadLetras || ''} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiFormateado}, extendido por el Registro Nacional de las Personas; autorizo que del contrato de <strong>${tipoContrato}</strong> realizado por medio de la escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura || ''}) autorizada en esta ciudad el día ${fechaEnLetrasTexto} por la notaria ${datos.notario || 'María Olga Arce Godoy'}, se realicen transferencia al número de cuenta ${numeroCuentaFormateado} a nombre de <strong>${nombreCuentaFinal}</strong>, cuenta monetaria de ${datos.banco || ''}.</p>
+            <p>Deseándoles éxitos en sus labores diarias, el motivo de la presente es para hacer de su conocimiento que, YO, <strong>${(datos.nombreCompleto || '').toUpperCase()}</strong>, de ${datos.edadLetras || ''} años, ${estadoCivilAjustado}, ${nacionalidad}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación -DPI- con Código Único de Identificación --CUI-) ${dpiFormateado}, extendido por el Registro Nacional de las Personas; autorizo que del contrato de <strong>${tipoContrato}</strong> realizado por medio de la escritura número ${numeroEscrituraEnLetras} (${datos.numeroEscritura || ''}) autorizada en esta ciudad el día ${fechaEnLetrasTexto} por la notaria ${datos.notario || 'María Olga Arce Godoy'}, se realicen transferencia al número de cuenta ${numeroCuentaFormateado} a nombre de <strong>${nombreCuentaFinal}</strong>, cuenta ${datos.tipoCuenta || 'monetaria'} de ${datos.banco || ''}.</p>
+
             <p></p>
             <p>Esperando su apoyo y agradecimiento de antemano.</p>
         </div>

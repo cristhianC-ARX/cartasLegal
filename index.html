@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -362,6 +363,7 @@
         <div class="header">
             <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
             <h1>Generador de Cartas</h1>
+            <p>Sistema de generación automática de documentos legales</p>
         </div>
         
         <div class="main-content">
@@ -2042,17 +2044,57 @@ const tipoContrato = datos.tipoContrato || 'MUTUO';
                             }
                             
                             .letter-body { 
-                                text-align: left; 
-                                margin-bottom: 25px;
-                                text-indent: 0;
-                            }
-                            
-                            .letter-body p {
-                                margin-bottom: 15px;
-                                text-align: left;
-                                line-height: 1.4;
-                                text-indent: 0;
-                            }
+    text-align: justify; 
+    margin-bottom: 25px;
+    text-indent: 0;
+}
+
+.letter-body p {
+    margin-bottom: 15px;
+    text-align: justify;
+    line-height: 1.4;
+    text-indent: 0;
+}
+
+/* Fecha alineada a la derecha */
+div[style*="text-align: left"][style*="margin-bottom: 30px"] {
+    text-align: right !important;
+}
+
+/* Para gift cards - fecha */
+div[style*="margin-bottom: 40px"] p:first-child {
+    text-align: right !important;
+}
+
+/* Solo justificar párrafos largos del contenido principal */
+.letter-body p:not(:first-child):not(:last-child):not([style*="text-align"]) {
+    text-align: justify !important;
+}
+
+/* Justificar específicamente párrafos con contenido largo (más de 100 caracteres) */
+p {
+    text-align: left;
+}
+
+p:not(:empty) {
+    text-align: justify !important;
+}
+
+/* Excepciones - mantener alineación original */
+p:has(strong:only-child),
+p strong:only-child,
+.letter-header p,
+.letter-signature p,
+p[style*="text-align: center"],
+div[style*="text-align: center"] p {
+    text-align: center !important;
+}
+
+/* Encabezados y títulos mantener a la izquierda */
+p:has(strong):first-child,
+p strong:first-of-type {
+    text-align: left !important;
+}
                             
                             .letter-signature { 
                                 margin-top: 40px; 

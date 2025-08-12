@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -997,6 +996,21 @@
                                     <input type="text" id="numeroEscritura" placeholder="Ej: 437" required>
                                 </div>
                             </div>
+                            </div>
+<div class="form-row">
+    <div class="form-col">
+        <div class="form-group">
+            <label for="nombreAsesor">Nombre del Asesor *</label>
+            <input type="text" id="nombreAsesor" placeholder="Ej: EMELY LIZETH JIMENEZ FLORIAN" required>
+        </div>
+    </div>
+    <div class="form-col">
+        <div class="form-group">
+            <label for="correoAsesor">Correo del Asesor *</label>
+            <input type="email" id="correoAsesor" placeholder="Ej: ejimenez@presta.express" required>
+        </div>
+    </div>
+</div>
                         </div>
                     `;
                     break;
@@ -1579,11 +1593,16 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                     <img src="https://live.staticflickr.com/65535/54530935400_7ccb4446e4.jpg" alt="Presta Express Logo">
                 </div>
                 
-                <div style="margin-bottom: 40px;">
-<p><strong>Fecha: ${fecha.replace('Guatemala, ', '').replace('.', '')}</strong></p>                    <p></p>
+    <div style="text-align: left; margin-bottom: 30px;">
+            <strong>${fecha}</strong>
+            <br><br><br>
+
+        </div>
+ <div class="letter-body" style="margin-bottom: 60px;">
 <p><strong>Nombre de Beneficiario: ${(datos.nombreCompleto || '').toUpperCase()}</strong></p>
 
                     <p></p>
+                     <div class="letter-body" style="margin-bottom: 60px;">
 <p><strong>DPI: ${formatearDPIDisplay(datos.dpi || '')}</strong></p>
 
                 </div>
@@ -1595,19 +1614,21 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                     <p></p>
                     <p>Reconozco que esta Gift Card no forma parte del monto desembolsado ni del contrato de préstamo hipotecario otorgado, y que he recibido dicha tarjeta a satisfacción.</p>
                 </div>
-                
-                <div style="margin-top: 80px;">
+    </div>   
+    <br>        
+                <div style="margin-top: 40px;">
                     <p>Firma: ________________________________</p>
                     <p></p>
                     <p></p>
                     <p></p>
-                    <p></p>
-                    <p></p>
+             
                     <p style="text-align: center;">
                         <br>
                         <br>
                         <br>
                         <br>
+                        <br>
+                      
                         ________________________________<br>
 <strong>${(datos.nombreAsesor || 'Nombre de Asesor').toUpperCase()}</strong>
                     </p>
@@ -1631,12 +1652,12 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                 </div>
                 
                 <div class="letter-body">
-                    <p><strong>Señores:</strong></p>
+                    <p><strong>Señores: Presta Express </strong></p>
                     <p><strong>Presentes</strong></p>
                     <p></p>
                     <p><strong>Estimado jefe de Agencia,</strong></p>
                     <p></p>
-                    <p>Espero que esta carta le encuentre bien. Me dirijo a usted para proporcionar información sobre la procedencia de los fondos del <strong>${tratamiento}. ${datos.nombreCompleto || ''}</strong>, de ${datos.edadLetras || ''} años, ${datos.estadoCivil || ''}, ${datos.nacionalidad || ''}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) ${datos.dpiLetras || ''}.</p>
+<p>Espero que esta carta le encuentre bien. Me dirijo a usted para proporcionar información sobre la procedencia de los fondos del <strong>${tratamiento}. ${datos.nombreCompleto || ''}</strong>, de ${datos.edadLetras || ''} años, ${datos.estadoCivil || ''}, ${datos.nacionalidad || ''}, ${datos.profesion || ''}, de este domicilio, quien me identifico con el Documento Personal de Identificación (DPI) con Código Único de Identificación (CUI) ${formatearDPIDisplay(datos.dpi || '')} ${datos.dpiLetras || ''}.</p>
                     <p></p>
                     <p>El origen de los fondos proviene de la autorización de crédito con garantía hipotecaria / <strong>Presta Express</strong>.</p>
                     <p></p>
@@ -1644,14 +1665,16 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                     <p></p>
                     <p>Quedo a su disposición para cualquier consulta adicional y agradezco su pronta respuesta, para la confirmación de esta carta pueden comunicarse al número 2425-9700 al departamento de contabilidad.</p>
                     <p></p>
+                    <br><br>
                     <p><strong>Atentamente,</strong></p>
+                    <br><br>
                 </div>
                 
                 <div class="letter-signature">
                     <div class="signature-line"></div>
-                    <p><strong>EMELY LIZETH JIMENEZ FLORIAN</strong></p>
-                    <p>19 calle 5-47 zona 10 Edificio Unicentro nivel 13 oficina 1302</p>
-<p>ejimenez@presta.express</p>
+                    <p><strong>${(datos.nombreAsesor || 'EMELY LIZETH JIMENEZ FLORIAN').toUpperCase()}</strong></p>
+<p>19 calle 5-47 zona 10 Edificio Unicentro nivel 13 oficina 1302</p>
+<p>${datos.correoAsesor || 'ejimenez@presta.express'}</p>
                 </div>
             `;
         }
@@ -1670,6 +1693,7 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                     <strong>${fecha}</strong>
                 </div>
                 
+                <br><br>
                 <div class="letter-body" style="margin-bottom: 60px;">
                     <p><strong>Señores:</strong></p>
                     <p><strong>${datos.empresa || 'PRESTA EXPRESS, SOCIEDAD ANÓNIMA.'}</strong></p>
@@ -1681,6 +1705,7 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                     <p></p>
                     <p>Esperando su apoyo y agradecimiento de antemano.</p>
                 </div>
+                <br><br>
                 
                 <div class="letter-signature" style="margin-top: 100px;">
                     <div class="signature-line"></div>
@@ -1690,7 +1715,6 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
             `;
         }
 
-        // ... continuar con el resto de funciones
         
         // Funciones auxiliares
         function numeroALetrasCompleto(numero) {
@@ -1812,12 +1836,15 @@ const nacionalidad = datos.nacionalidad || (genero === 'femenino' ? 'guatemaltec
         
         <div style="text-align: left; margin-bottom: 30px;">
             <strong>${fecha}</strong>
+            <br>
+
         </div>
         
         <div class="letter-body" style="margin-bottom: 60px;">
             <p><strong>Señores:</strong></p>
             <p><strong>${datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.'}</strong></p>
             <p><strong>Presente</strong></p>
+            <br><br><br>
             <p></p>
             <p><strong>Estimados Señores:</strong></p>
             <p></p>
@@ -1826,6 +1853,7 @@ const nacionalidad = datos.nacionalidad || (genero === 'femenino' ? 'guatemaltec
             <p></p>
             <p>Esperando su apoyo y agradecimiento de antemano.</p>
         </div>
+        <br><br><br>
         
         <div class="letter-signature" style="margin-top: 80px;">
             <div class="signature-line"></div>
@@ -1869,6 +1897,7 @@ const tipoContrato = datos.tipoContrato || 'MUTUO';
                     <p></p>
                     <p>Esperando su apoyo y agradecimiento de antemano.</p>
                 </div>
+                <br><br>
                 
                 <div class="letter-signature" style="margin-top: 80px;">
                     <div style="display: flex; justify-content: space-around; margin-top: 50px;">

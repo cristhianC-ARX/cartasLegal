@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1696,7 +1697,7 @@ const letras2 = numeroALetrasDPI(parseInt(grupo2));
                 <br><br>
                 <div class="letter-body" style="margin-bottom: 60px;">
                     <p><strong>Señores:</strong></p>
-                    <p><strong>${datos.empresa || 'PRESTA EXPRESS, SOCIEDAD ANÓNIMA.'}</strong></p>
+<p><strong>${datos.empresa === 'otra' ? (datos.empresaOtra || 'EMPRESA NO ESPECIFICADA') : (datos.empresa || 'PRESTA EXPRESS, SOCIEDAD ANÓNIMA.')}</strong></p>
                     <p><strong>Presente</strong></p>
                     <p></p>
                     <p><strong>Estimados Señores:</strong></p>
@@ -1842,7 +1843,7 @@ const nacionalidad = datos.nacionalidad || (genero === 'femenino' ? 'guatemaltec
         
         <div class="letter-body" style="margin-bottom: 60px;">
             <p><strong>Señores:</strong></p>
-            <p><strong>${datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.'}</strong></p>
+<p><strong>${datos.empresa === 'otra' ? (datos.empresaOtra || 'EMPRESA NO ESPECIFICADA') : (datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.')}</strong></p>
             <p><strong>Presente</strong></p>
             <br><br><br>
             <p></p>
@@ -1888,7 +1889,7 @@ const tipoContrato = datos.tipoContrato || 'MUTUO';
                 
                 <div class="letter-body" style="margin-bottom: 60px;">
                     <p><strong>Señores:</strong></p>
-                    <p><strong>${datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.'}</strong></p>
+<p><strong>${datos.empresa === 'otra' ? (datos.empresaOtra || 'EMPRESA NO ESPECIFICADA') : (datos.empresa || 'HOLLEM, SOCIEDAD ANÓNIMA.')}</strong></p>
                     <p><strong>Presente</strong></p>
                     <p></p>
                     <p><strong>Estimados Señores:</strong></p>
